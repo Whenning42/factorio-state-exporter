@@ -1,13 +1,15 @@
 # Reads state_writer.lua's json game state into a dict.
 # Also keeps track of when we've seen the last update.
 
+import json
 import socket
 import threading
 import time
-import json
+
 
 class StateReader:
     def __init__(self, port):
+        self.state_lock = threading.Lock()
         self.state = {}
         self.port = port
 
@@ -19,30 +21,33 @@ class StateReader:
 
         while True:
             message, address = sock.recvfrom(80_000)
-            message = message.decode('utf-8')
+            message = message.decode("utf-8")
 
-            print(message)
             data = json.loads(message)
-            self.state = data | self.state
-
-            print(f"Current state: {self.state}")
+            self.state_lock.acquire()
+            self.state |= data
+            self.state_lock.release()
 
     def run(self):
         t = threading.Thread(target=self._loop, args=(), daemon=True)
         t.start()
 
     def get_state(self) -> dict[str, str | float]:
-        # Return the state, make sure we don't
-        # race/tear with the _loop.
-        pass
+        out = None
+        self.state_lock.acquire()
+        out = self.state.copy()
+        self.state_lock.release()
+        return out
 
     def get_state_after_ticks(self, ticks) -> dict[str, str | float]:
         # Wait for at least "ticks" number of ticks to have occurred.
         # Then return the current state.
         pass
 
+
 if __name__ == "__main__":
     import sys
+
     if len(sys.argv) >= 2:
         port = int(sys.argv[1])
     else:
@@ -51,4 +56,5 @@ if __name__ == "__main__":
     r = StateReader(port)
     r.run()
     while True:
-        time.sleep(10)
+        time.sleep(0.1)
+        print("reader state: ", r.get_state())
