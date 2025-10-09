@@ -67,24 +67,6 @@ local function on_tick(event)
   if event.tick % 32 == 0 then
     send_game_state = true
   end
-  
-  -- ✓ Initial state to read
-  --   ✓ Items produced/consumed
-  --     - produced-*
-  --     - consumed-*
-  --   ✓ Tech tree progress
-  --     - tech-*
-  --   ✓ Player health
-  --     - player-health-ratio
-  --   ✓ Buildings/Lives lost
-  --     - lost-* ("lost-character" for num deaths)
-  --
-  -- ✓ Come up with a heartbeat/tick frequency strategy
-  --     - Heartbeat 15bps, game state ~2hz. Use the same
-  --       message format for each and make use of incrementality
-  --       of the reader.
-  --
-  -- TODO: Figure out how we want to assign ports.
 
   message = {}
   message["tick"] = event.tick
