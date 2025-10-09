@@ -1,0 +1,9 @@
+{
+  "name": "state-export",
+  "version": "0.1.0",
+  "title": "State Export",
+  "author": "whenning",
+  "factorio_version": "2.0",
+  "dependencies": ["base >= 2.0"],
+  "description": "Logs game state to an output sink for downstream consumption."
+}
