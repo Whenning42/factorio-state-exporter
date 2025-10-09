@@ -9,40 +9,47 @@ import time
 
 class StateReader:
     def __init__(self, port):
-        self.state_lock = threading.Lock()
         self.state = {}
+        self.state_cv = threading.Condition()
+        self.last_tick = 0
         self.port = port
+
+    # Exposed for unit tests.
+    def _update_state(self, state):
+        with self.state_cv:
+            self.state |= state
+            self.last_tick = self.state.get("tick", 0)
+            self.state_cv.notify_all()
 
     def _loop(self):
         sock = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-        ip = "127.0.0.1"
-        sock.bind((ip, self.port))
-        print(f"udp server up and listening on {ip}:{self.port}")
+        localhost = "127.0.0.1"
+        sock.bind((localhost, self.port))
+        print(f"udp server up and listening on {localhost}:{self.port}")
 
         while True:
             message, address = sock.recvfrom(80_000)
             message = message.decode("utf-8")
-
             data = json.loads(message)
-            self.state_lock.acquire()
-            self.state |= data
-            self.state_lock.release()
+            self._update_state(data)
 
     def run(self):
-        t = threading.Thread(target=self._loop, args=(), daemon=True)
-        t.start()
+        threading.Thread(target=self._loop, args=(), daemon=True).start()
 
     def get_state(self) -> dict[str, str | float]:
-        out = None
-        self.state_lock.acquire()
-        out = self.state.copy()
-        self.state_lock.release()
-        return out
+        with self.state_cv:
+            return self.state.copy()
 
-    def get_state_after_ticks(self, ticks) -> dict[str, str | float]:
-        # Wait for at least "ticks" number of ticks to have occurred.
-        # Then return the current state.
-        pass
+    def get_state_after_ticks(
+        self, ticks, timeout_seconds=None
+    ) -> dict[str, str | float] | None:
+        with self.state_cv:
+            start_tick = self.last_tick
+            ok = self.state_cv.wait_for(
+                lambda: self.last_tick >= start_tick + ticks,
+                timeout_seconds,
+            )
+            return self.state.copy() if ok else None
 
 
 if __name__ == "__main__":
