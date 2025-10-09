@@ -65,9 +65,6 @@ local function on_tick(event)
   if event.tick % 32 == 0 then
     send_game_state = true
   end
-
-
-  game.print(event.tick)
   
   -- ✓ Initial state to read
   --   ✓ Items produced/consumed
