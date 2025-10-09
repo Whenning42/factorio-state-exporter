@@ -10,6 +10,8 @@ import time
 class StateReader:
     def __init__(self, port):
         self.state = {}
+        # Note: https://pages.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf has a really good
+        # explainer on how to use condition variables.
         self.state_cv = threading.Condition()
         self.last_tick = 0
         self.port = port
