@@ -4,6 +4,8 @@
 -- player to track and that surface 1, "nauvis", is the correct
 -- surface to export statistics for.
 
+settings = require("settings")
+
 local function add_item_stats(game_state)
   local prod_stats = game.players[1].force.get_item_production_statistics(1)
   produced = prod_stats.input_counts
@@ -95,8 +97,10 @@ local function on_tick(event)
   end
 
   data = helpers.table_to_json(message)
-  game.print(data)
-  helpers.send_udp(6002, data)
+  if settings.verbose then
+    game.print(data)
+  end
+  helpers.send_udp(settings.port_num, data)
 end
 
 script.on_event(defines.events.on_tick, on_tick)

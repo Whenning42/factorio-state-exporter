@@ -42,7 +42,13 @@ class StateReader:
         pass
 
 if __name__ == "__main__":
-    r = StateReader(6002)
+    import sys
+    if len(sys.argv) >= 2:
+        port = int(sys.argv[1])
+    else:
+        port = 33491
+
+    r = StateReader(port)
     r.run()
     while True:
         time.sleep(10)
