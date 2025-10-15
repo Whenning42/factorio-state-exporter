@@ -18,6 +18,7 @@ Stats exported:
 | Statistic               | Key format             |  Type / range | 
 | ----------------------- | ---------------------- | ------------: | 
 | Tick                    | `tick`                 | Number        | 
+| Map Seed                | `seed`                 | Number        |
 | Items produced          | `produced-<item_name>` | Number        | 
 | Items consumed          | `consumed-<item_name>` | Number        | 
 | Tech researched         | `tech-<tech_name>`     | 0/1           | 

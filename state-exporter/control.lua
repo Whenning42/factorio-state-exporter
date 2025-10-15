@@ -6,6 +6,10 @@
 
 settings = require("settings")
 
+local function add_map_seed(game_state)
+  game_state["seed"] = game.players[1].surface.map_gen_settings.seed
+end
+
 local function add_item_stats(game_state)
   local prod_stats = game.players[1].force.get_item_production_statistics(1)
   produced = prod_stats.input_counts
@@ -72,6 +76,7 @@ local function on_tick(event)
   message["tick"] = event.tick
 
   if send_game_state then
+    add_map_seed(message)
     add_item_stats(message)
     add_tech_stats(message)
     add_health_stats(message)
