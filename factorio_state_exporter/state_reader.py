@@ -55,6 +55,7 @@ class StateReader:
 
 
 if __name__ == "__main__":
+    # An integration test for the state_reader.
     import sys
 
     if len(sys.argv) >= 2:
