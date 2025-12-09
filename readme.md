@@ -33,7 +33,9 @@ to fork the project or file a feature request if want/need broader support.
 
 # Usage
 
-To install this mod, copy or symlink it in to your .../factorio/mods folder.
+To install this mod, you can either:
+- Manually copy or symlink the mod directory to your .../factorio/mods folder
+- Use the `install_mod` function from `state_reader.py`
 
 To use this mod, you must start factorio with the  `--enable_udp_port <factorio_listen_port>`.
 The mod doesn't use the listening port, so unless it's needed for any other mods, you
@@ -41,7 +43,6 @@ can set an arbitrary available port on your machine.
 
 # Configuration
 
-The mod's settings can be configured with the `settings.lua` or `settings.lua.tpl`
-files. The first file is the settings the mod is using, and the second file is a
-templated version you can use to programmatically generate the settings file, though
-you'll need to provide your own template evaluator.
+The mod's settings can be configured when using the `install_mod` function by passing
+the `port_num` and `verbose` parameters, or by manually editing the `settings.lua` file
+in the mod directory.

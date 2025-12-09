@@ -1,3 +1,7 @@
+0.1.3 - 2025-12-09
+
+Streamline the programmatic installation interface.
+
 0.1.2 - 2025-10-15
 
 Add map seed to exported state.

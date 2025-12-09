@@ -1,8 +1,9 @@
 import threading
 import time
 import unittest
+from pathlib import Path
 
-from state_reader import StateReader
+from state_reader import StateReader, mod_file_path
 
 
 class TestStateReader(unittest.TestCase):
@@ -44,6 +45,18 @@ class TestStateReader(unittest.TestCase):
         result = reader.get_state_after_ticks(ticks=1, timeout_seconds=0.2)
 
         self.assertIsNone(result)
+
+    def test_mod_file_path(self):
+        """Test that mod_file_path returns a valid path to the mod directory."""
+        path = Path(mod_file_path())
+        self.assertTrue(path.exists(), f"mod directory does not exist at {path}")
+        self.assertTrue(path.is_dir(), f"{path} is not a directory")
+        self.assertTrue(
+            (path / "control.lua").exists(), "control.lua not found in mod directory"
+        )
+        self.assertTrue(
+            (path / "info.json").exists(), "info.json not found in mod directory"
+        )
 
 
 if __name__ == "__main__":

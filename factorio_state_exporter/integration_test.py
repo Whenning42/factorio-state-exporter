@@ -5,6 +5,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from state_reader import install_mod
+
 processes = []
 
 
@@ -30,11 +32,14 @@ if __name__ == "__main__":
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
 
-    factorio_path = Path.home() / "Games" / "factorio" / "bin" / "x64" / "factorio"
+    factorio_root = Path.home() / "Games" / "factorio"
+    factorio_binary = factorio_root / "bin" / "x64" / "factorio"
+
+    install_mod(factorio_root, port_num=33491, verbose=False)
 
     # Start factorio with UDP enabled
     factorio_proc = subprocess.Popen(
-        [str(factorio_path), "--enable-lua-udp", "6001"],
+        [str(factorio_binary), "--enable-lua-udp", "6001"],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
