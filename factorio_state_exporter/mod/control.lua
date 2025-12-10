@@ -39,6 +39,16 @@ local function add_health_stats(game_state)
   end
 end
 
+local function add_player_position(game_state)
+  if game.players[1].character ~= nil then
+    game_state["player-x"] = game.players[1].character.position.x
+    game_state["player-y"] = game.players[1].character.position.y
+  else
+    game_state["player-x"] = 0
+    game_state["player-y"] = 0
+  end
+end
+
 local function add_losses_stats(game_state)
   local stats = game.players[1].force.get_kill_count_statistics(1)
   for k, v in pairs(stats.output_counts) do
@@ -80,6 +90,7 @@ local function on_tick(event)
     add_item_stats(message)
     add_tech_stats(message)
     add_health_stats(message)
+    add_player_position(message)
     add_losses_stats(message)
   end
 

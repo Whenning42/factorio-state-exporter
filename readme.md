@@ -23,6 +23,7 @@ Stats exported:
 | Items consumed          | `consumed-<item_name>` | Number        | 
 | Tech researched         | `tech-<tech_name>`     | 0/1           | 
 | Player health           | `player-health-ratio`  | float (0–1)   | 
+| Player position         | `player-x`, `player-y` | Number        | 
 | Entities lost/destroyed | `lost-<entity_name>`   | Number        | 
 | Lives lost (character)  | `lost-character`       | Number        | 
 
