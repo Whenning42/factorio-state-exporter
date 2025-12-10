@@ -1,3 +1,7 @@
+0.1.4 - 2025-12-09
+
+Flatten the package's API.
+
 0.1.3 - 2025-12-09
 
 Streamline the programmatic installation interface.

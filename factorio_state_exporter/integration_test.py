@@ -1,11 +1,10 @@
 import atexit
-import os
 import signal
 import subprocess
 import sys
 from pathlib import Path
 
-from state_reader import install_mod
+from factorio_state_exporter.install_mod import install_mod
 
 processes = []
 
